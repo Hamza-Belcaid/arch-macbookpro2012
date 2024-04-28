@@ -11,7 +11,7 @@ The purpose of this script is to create an automated install for this specific l
 
 # Usage
 
-NOTE: This script should run in the chroot environment.
+NOTE: This script should be run in the chroot environment on a basic Arch installation.
 ```
 $ git clone https://github.com/Hamza-Belcaid/arch-macbookpro2012.git
 $ cd arch-macbookpro2012
