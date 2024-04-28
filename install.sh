@@ -10,7 +10,7 @@ echo -e "${orange}[Warning]${textreset} This script should be run after arch-chr
 
 echo -e "${green}[Important]${textreset} Make sure to change values for things such as the region and keyboad layout, by default they are configured for my specific needs.\n" 
 
-#This is where the installation script starts#
+#This is where the installation script starts
 echo -e "Configuring timezone to Casablanca GMT+01:00."
 ln -sf /usr/share/zoneinfo/Africa/Casablanca /etc/localtime
 hwclock --systohc
@@ -62,8 +62,8 @@ echo "initrd /initramfs-linux.img" >> /boot/loader/entries/arch.conf
 echo "options root=/dev/sda3 rw" >> /boot/loader/entries/arch.conf
 echo -e "${green}[Done]${textreset}"
 
-echo -e "Downloading system packages."
-pacman -S --noconfirm neovim networkmanager git intel-ucode mtools dosfstools ntfs-3g reflector base-devel linux-headers gvfs inetutils ufw packagekit-qt5bluez bluez-utils cups hplip bash-completion flatpak acpi acpid acpi_call tlp firefox 
+echo -e "Downloading packages."
+pacman -S --noconfirm neovim networkmanager intel-ucode mtools dosfstools ntfs-3g reflector base-devel linux-headers gvfs inetutils ufw bluez bluez-utils cups hplip bash-completion flatpak acpi acpid acpi_call tlp firefox 
 echo -e "${green}[Done]${textreset}"
 
 echo -e "Enabling services."
@@ -74,14 +74,6 @@ systemctl enable tlp
 systemctl enable reflector.timer
 systemctl enable fstrim.timer
 systemctl enable acpid
-echo -e "${green}[Done]${textreset}"
-
-echo -e "Installing yay."
-cd tmp
-git clone https://aur.archlinux.org/yay.git
-cd yay
-makepkg -si
-cd ..
 echo -e "${green}[Done]${textreset}"
 
 #This loops keeps repeating until the user enters a valid number

@@ -1,6 +1,6 @@
 #!bin/bash
 
-#NOTE: This script is run after the user chooses to install KDE Plasma Desktop environment, It is possible to run it manualy if desired
+#NOTE: This script is run after the user chooses to install KDE Plasma Desktop environment, It is possible to run it mannualy if desired
 
 sudo pacman -S --noconfirm plasma sddm konsole
 
