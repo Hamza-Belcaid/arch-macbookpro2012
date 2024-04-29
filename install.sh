@@ -1,12 +1,12 @@
 #!/bin/bash
 
-# This section is responsible for changing colors in the terminal
+# This is for changing colors in the terminal
 textreset="\033[0m"
 orange="\033[93m"
 green="\033[0;92m"
 
 # These are warning messages before installation
-echo -e "${orange}[Warning]${textreset} This script should be run after arch-chroot into the arch installation.\n"
+echo -e "${orange}[Warning]${textreset} This script should be run in the arch-chroot environment on a minimal Arch install.\n"
 
 echo -e "${green}[Important]${textreset} Make sure to change values for things such as the region and keyboad layout, by default they are configured for my specific needs.\n" 
 
@@ -23,7 +23,7 @@ echo -e "${green}[Done]${textreset}"
 
 #NOTE: This section still needs work
 echo -e "Configuring Keyboard layout to german."
-echo "KEYMAP=de" >> /etc/vconsole.conf
+echo "KEYMAP=de-latin1" >> /etc/vconsole.conf
 echo -e "${green}[Done]${textreset}"
 
 echo -e "Configuring hostname to 'macbookpro'."
@@ -80,7 +80,7 @@ echo -e "${green}[Done]${textreset}"
 error=1
 while [ $error == 1 ]; do
   echo -e "Choose which desktop environment to install ? (ex:1/2/3): 
-  1-KDE Plasma | ~750 MB download size"
+  1-KDE Plasma | ~550 MB download size"
   read s1
 
   case $s1 in
