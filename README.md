@@ -6,7 +6,7 @@ The purpose of this script is to create an automated Arch install for this speci
 # Features
 * Basic system configuration
 * Installs packages (ex: neovim,networkmanager,etc) 
-* Various Desktop Environments to choose from. (only KDE Plasma as of now)
+* Various Desktop Environments to choose from. (only a basic KDE Plasma as of now)
 
 
 # Usage
