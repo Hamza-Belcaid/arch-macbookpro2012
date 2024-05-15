@@ -40,7 +40,12 @@ echo -e "${green}[Done]${textreset}"
 echo -e "Configuring hosts file." 
 echo "127.0.0.1 localhost" >> /etc/hosts
 echo "::1       localhost" >> /etc/hosts
-echo "127.0.1.1 arch.localdomain arch" >> /etc/hosts
+echo "127.0.1.1 macbookpro" >> /etc/hosts
+echo -e "${green}[Done]${textreset}"
+
+
+echo -e "Configuring parallel Downloads for pacman"
+echo "ParallelDownloads = 5">> /etc/pacman.conf
 echo -e "${green}[Done]${textreset}"
 
 echo -e "Downloading and configuring sudo."
@@ -63,7 +68,7 @@ echo "options root=/dev/sda3 rw" >> /boot/loader/entries/arch.conf
 echo -e "${green}[Done]${textreset}"
 
 echo -e "Downloading packages."
-pacman -S --noconfirm neovim networkmanager intel-ucode mtools dosfstools ntfs-3g reflector base-devel linux-headers gvfs inetutils ufw bluez bluez-utils cups hplip bash-completion flatpak acpi acpid acpi_call tlp firefox 
+pacman -S --noconfirm neovim networkmanager intel-ucode mtools dosfstools ntfs-3g reflector base-devel linux-headers wl-clipboard gvfs inetutils ufw bluez bluez-utils cups hplip bash-completion flatpak acpi acpid acpi_call tlp firefox 
 echo -e "${green}[Done]${textreset}"
 
 echo -e "Enabling services."
@@ -74,6 +79,11 @@ systemctl enable tlp
 systemctl enable reflector.timer
 systemctl enable fstrim.timer
 systemctl enable acpid
+echo -e "${green}[Done]${textreset}"
+
+echo -e "${orange} Enabling ufw and setting the default firewall policy to deny ${textreset}"
+ufw default deny
+ufw enable
 echo -e "${green}[Done]${textreset}"
 
 #This loops keeps repeating until the user enters a valid number
