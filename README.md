@@ -13,8 +13,8 @@ The purpose of this script is to create an automated Arch install for this speci
 
 NOTE: This script should be run in the chroot environment on a basic Arch installation.
 ```
-$ git clone https://github.com/Hamza-Belcaid/arch-macbookpro2012.git
-$ cd arch-macbookpro2012
-$ chmod +x install.sh 
-$ ./install.sh 
+git clone https://github.com/Hamza-Belcaid/arch-macbookpro2012.git
+cd arch-macbookpro2012
+chmod +x install.sh 
+./install.sh 
 ```
