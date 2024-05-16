@@ -9,6 +9,7 @@ green="\033[0;92m"
 echo -e "${orange}[Warning]${textreset} This script should be run in the arch-chroot environment on a minimal Arch install.\n"
 
 echo -e "${green}[Important]${textreset} Make sure to change values for things such as the region and keyboad layout, by default they are configured for my specific needs.\n" 
+sleep 5 
 
 #This is where the installation script starts
 echo -e "Configuring timezone to Casablanca GMT+01:00."
@@ -21,7 +22,6 @@ echo "LANG=en_US.UTF-8" >> /etc/locale.conf
 locale-gen
 echo -e "${green}[Done]${textreset}" 
 
-#NOTE: This section still needs work
 echo -e "Configuring Keyboard layout to german."
 echo "KEYMAP=de-latin1" >> /etc/vconsole.conf
 echo -e "${green}[Done]${textreset}"
@@ -43,11 +43,6 @@ echo "::1       localhost" >> /etc/hosts
 echo "127.0.1.1 macbookpro" >> /etc/hosts
 echo -e "${green}[Done]${textreset}"
 
-
-echo -e "Configuring parallel Downloads for pacman"
-echo "ParallelDownloads = 5">> /etc/pacman.conf
-echo -e "${green}[Done]${textreset}"
-
 echo -e "Downloading and configuring sudo."
 pacman -S --noconfirm sudo 
 echo "mac ALL=(ALL) ALL" >> /etc/sudoers.d/mac
@@ -67,9 +62,17 @@ echo "initrd /initramfs-linux.img" >> /boot/loader/entries/arch.conf
 echo "options root=/dev/sda3 rw" >> /boot/loader/entries/arch.conf
 echo -e "${green}[Done]${textreset}"
 
-echo -e "Downloading packages."
-pacman -S --noconfirm neovim networkmanager intel-ucode mtools dosfstools ntfs-3g reflector base-devel linux-headers wl-clipboard gvfs inetutils ufw bluez bluez-utils cups hplip bash-completion flatpak acpi acpid acpi_call tlp firefox 
+echo -e "Installing yay."
+git clone https://aur.archlinux.org/yay.git 
+cd yay
+sudo -u mac makepkg -si
 echo -e "${green}[Done]${textreset}"
+
+echo -e "Downloading packages."
+pacman -S --noconfirm neovim networkmanager intel-ucode mtools dosfstools ntfs-3g xdg-user-dirs reflector base-devel linux-headers wl-clipboard gvfs inetutils ufw broadcom-wl-dkms bluez bluez-utils cups hplip bash-completion flatpak acpi acpid acpi_call tlp firefox 
+echo -e "${green}[Done]${textreset}"
+
+yay -S gpu-switch mbpfan 
 
 echo -e "Enabling services."
 systemctl enable NetworkManager 
@@ -79,9 +82,10 @@ systemctl enable tlp
 systemctl enable reflector.timer
 systemctl enable fstrim.timer
 systemctl enable acpid
+systemctl enable mbpfan.servicee
 echo -e "${green}[Done]${textreset}"
 
-echo -e "${orange} Enabling ufw and setting the default firewall policy to deny ${textreset}"
+echo -e "${orange}Enabling ufw and setting the default firewall policy to deny.${textreset}"
 ufw default deny
 ufw enable
 echo -e "${green}[Done]${textreset}"
