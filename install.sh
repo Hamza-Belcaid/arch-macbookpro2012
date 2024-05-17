@@ -65,7 +65,7 @@ echo -e "${green}[Done]${textreset}"
 echo -e "Installing yay."
 git clone https://aur.archlinux.org/yay.git 
 cd yay
-sudo -u mac makepkg -si
+su mac -c "makepkg -si"
 echo -e "${green}[Done]${textreset}"
 
 echo -e "Downloading packages."
