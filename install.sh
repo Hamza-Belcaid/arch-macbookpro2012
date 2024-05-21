@@ -63,15 +63,23 @@ echo "options root=/dev/sda3 rw" >> /boot/loader/entries/arch.conf
 echo -e "${green}[Done]${textreset}"
 
 echo -e "Downloading packages."
-pacman -S --noconfirm neovim networkmanager intel-ucode mtools dosfstools ntfs-3g xdg-user-dirs reflector base-devel linux-headers wl-clipboard gvfs inetutils ufw broadcom-wl-dkms bluez bluez-utils cups hplip bash-completion flatpak acpi acpid acpi_call tlp firefox 
+pacman -S --noconfirm neovim networkmanager intel-ucode mtools dosfstools ntfs-3g xdg-user-dirs reflector base-devel linux-headers go wl-clipboard gvfs inetutils ufw broadcom-wl-dkms bluez bluez-utils cups hplip bash-completion flatpak acpi acpid acpi_call tlp firefox 
 echo -e "${green}[Done]${textreset}"
 
 echo -e "Installing yay."
-su mac -c "cd /tmp && git clone https://aur.archlinux.org/yay.git &&cd yay && makepkg -s"
-pacman -U --noconfirm yay*.pkg.tar
+su mac -c "cd /tmp && git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -s"
+pacman -U --noconfirm /tmp/yay/yay*.pkg.tar.zst
 echo -e "${green}[Done]${textreset}"
 
-yay -S gpu-switch mbpfan 
+echo -e "Installing gpu-switch."
+su mac -c "cd /tmp && git clone https://aur.archlinux.org/gpu-switch.git && cd gpu-switch && makepkg -s"
+pacman -U --noconfirm /tmp/gpu-switch/gpu-switch*.pkg.tar.zst
+echo -e "${green}[Done]${textreset}"
+
+echo -e "Installing mbpfan."
+su mac -c "cd /tmp && git clone https://aur.archlinux.org/mbpfan-git.git && cd mbpfan-git && makepkg -s"
+pacman -U --noconfirm /tmp/mbpfan-git/mbpfan-git*.pkg.tar.zst
+echo -e "${green}[Done]${textreset}"
 
 echo -e "Enabling services."
 systemctl enable NetworkManager 
@@ -81,7 +89,7 @@ systemctl enable tlp
 systemctl enable reflector.timer
 systemctl enable fstrim.timer
 systemctl enable acpid
-systemctl enable mbpfan.servicee
+systemctl enable mbpfan.service
 echo -e "${green}[Done]${textreset}"
 
 echo -e "${orange}Enabling ufw and setting the default firewall policy to deny.${textreset}"
