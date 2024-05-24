@@ -63,7 +63,7 @@ echo "options root=/dev/sda3 rw" >> /boot/loader/entries/arch.conf
 echo -e "${green}[Done]${textreset}"
 
 echo -e "Downloading packages."
-pacman -S --noconfirm neovim networkmanager intel-ucode mtools dosfstools ntfs-3g xdg-user-dirs reflector base-devel linux-headers go wl-clipboard gvfs inetutils ufw broadcom-wl-dkms bluez bluez-utils cups hplip bash-completion flatpak acpi acpid acpi_call tlp firefox 
+pacman -S --noconfirm neovim networkmanager network-manager-applet intel-ucode mtools dosfstools ntfs-3g xdg-user-dirs reflector base-devel linux-headers pacman-contrib go wl-clipboard gvfs inetutils ufw broadcom-wl-dkms bluez bluez-utils cups hplip bash-completion flatpak acpi acpid acpi_call tlp btop firefox 
 echo -e "${green}[Done]${textreset}"
 
 echo -e "Installing yay."
