@@ -18,7 +18,7 @@ hwclock --systohc
 echo -e "${green}[Done]${textreset}" 
 
 echo "Configuring system language to English-US."
-sed -i 's/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8' /etc/locale.gen
+sed -i 's/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
 locale-gen
 echo "LANG=en_US.UTF-8" >> /etc/locale.conf
 echo -e "${green}[Done]${textreset}" 
@@ -43,6 +43,13 @@ echo "Configuring hosts file."
 echo "127.0.0.1 localhost" >> /etc/hosts
 echo "::1       localhost" >> /etc/hosts
 echo "127.0.1.1 macbookpro" >> /etc/hosts
+echo -e "${green}[Done]${textreset}"
+
+echo "Configuring pacman."
+sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 4/' /etc/pacman.conf
+sed -i '38i\ILoveCandy' /etc/pacman.conf
+sed -i '77s/^#//' /etc/pacman.conf
+sed -i '78s/^#//' /etc/pacman.conf
 echo -e "${green}[Done]${textreset}"
 
 echo "Installing Reflector."
@@ -85,8 +92,9 @@ echo "Installing mbpfan."
 su mac -c "cd /tmp && git clone https://aur.archlinux.org/mbpfan-git.git && cd mbpfan-git && makepkg -s"
 pacman -U --noconfirm /tmp/mbpfan-git/mbpfan-git*.pkg.tar.zst
 sed -i 's/#min_fan1_speed = 2000/min_fan1_speed = 2000/' /etc/mbpfan.conf
+sed -i 's/#max_fan1_speed = 6200/min_fan1_speed = 5940/' /etc/mbpfan.conf
 sed -i 's/low_temp = 63/low_temp = 48/' /etc/mbpfan.conf 
-sed -i 's/high_temp= 66/high_temp = 58/' /etc/mbpfan.conf
+sed -i 's/high_temp = 66/high_temp = 58/' /etc/mbpfan.conf
 echo -e "${green}[Done]${textreset}"
 
 echo -e "Enabling services."
