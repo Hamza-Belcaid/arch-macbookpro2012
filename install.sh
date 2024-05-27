@@ -11,74 +11,82 @@ echo -e "${orange}[Warning]${textreset} This script should be run in the arch-ch
 echo -e "${green}[Important]${textreset} Make sure to change values for things such as the region and keyboad layout, by default they are configured for my specific needs.\n" 
 sleep 5 
 
-#This is where the installation script starts
-echo -e "Configuring timezone to Casablanca GMT+01:00."
+# Configuring locales
+echo "Configuring timezone to Casablanca GMT+01:00."
 ln -sf /usr/share/zoneinfo/Africa/Casablanca /etc/localtime
 hwclock --systohc
 echo -e "${green}[Done]${textreset}" 
 
-echo -e "Configuring system language to English-US."
-echo "LANG=en_US.UTF-8" >> /etc/locale.conf
+echo "Configuring system language to English-US."
+sed -i 's/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8' /etc/locale.gen
 locale-gen
+echo "LANG=en_US.UTF-8" >> /etc/locale.conf
 echo -e "${green}[Done]${textreset}" 
 
-echo -e "Configuring Keyboard layout to german."
-echo "KEYMAP=de-latin1" >> /etc/vconsole.conf
+echo "Configuring Keyboard layout to german."
+echo "KEYMAP=de_CH-latin1" >> /etc/vconsole.conf
 echo -e "${green}[Done]${textreset}"
 
-echo -e "Configuring hostname to 'macbookpro'."
+echo "Configuring hostname to 'macbookpro'."
 echo "macbookpro" >> /etc/hostname
 echo -e "${green}[Done]${textreset}"
 
-echo -e "Creating mac user."
+echo "Creating mac user."
 useradd -G wheel -m mac
 echo -e "${green}[Done]${textreset}"
-echo -e "Enter the user password."
+
+echo "Enter the user password."
 passwd mac
 echo -e "${green}[Done]${textreset}"
 
-echo -e "Configuring hosts file." 
+echo "Configuring hosts file." 
 echo "127.0.0.1 localhost" >> /etc/hosts
 echo "::1       localhost" >> /etc/hosts
 echo "127.0.1.1 macbookpro" >> /etc/hosts
 echo -e "${green}[Done]${textreset}"
 
-echo -e "Downloading and configuring sudo."
+echo "Installing Reflector."
+pacman -S --noconfirm reflector
+sed -i '/--country/c\--country colors= Morocco,Spain,France,Italy,Germany' /etc/xdg/reflector/reflector.conf
+echo -e "${green}[Done]${textreset}"
+
+echo "Installing sudo."
 pacman -S --noconfirm sudo 
 echo "mac ALL=(ALL) ALL" >> /etc/sudoers.d/mac
 echo -e "${green}[Done]${textreset}"
 
-echo -e "Downloading bootloader package."
+echo "Installing the bootloader."
 pacman -S --noconfirm efibootmgr
-echo -e "${green}[Done]${textreset}"
-
-echo -e "Installing the bootloader."
 bootctl --path=/boot install
 echo "default Arch-Linux" >> /boot/loader/loader.conf
-
 echo "title Arch Linux" >> /boot/loader/entries/arch.conf
 echo "linux /vmlinuz-linux" >> /boot/loader/entries/arch.conf
 echo "initrd /initramfs-linux.img" >> /boot/loader/entries/arch.conf
-echo "options root=/dev/sda3 rw" >> /boot/loader/entries/arch.conf
+# Finding what is the root partition
+root = df -h | grep "/$" | cut -d " " -f 1
+echo "options root=$root rw" >> /boot/loader/entries/arch.conf
 echo -e "${green}[Done]${textreset}"
 
-echo -e "Downloading packages."
-pacman -S --noconfirm neovim networkmanager network-manager-applet intel-ucode mtools dosfstools ntfs-3g xdg-user-dirs reflector base-devel linux-headers pacman-contrib go wl-clipboard gvfs inetutils ufw broadcom-wl-dkms bluez bluez-utils cups hplip bash-completion flatpak acpi acpid acpi_call tlp btop firefox 
+echo "Downloading packages."
+pacman -S --noconfirm neovim networkmanager network-manager-applet intel-ucode mtools dosfstools ntfs-3g xdg-user-dirsbase-devel linux-headers pacman-contrib go wl-clipboard gvfs inetutils dnsmasq ufw broadcom-wl-dkms bluez bluez-utils cups hplip bash-completion flatpak acpi acpid acpi_call tlp btop firefox 
 echo -e "${green}[Done]${textreset}"
 
-echo -e "Installing yay."
+echo "Installing yay."
 su mac -c "cd /tmp && git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -s"
 pacman -U --noconfirm /tmp/yay/yay*.pkg.tar.zst
 echo -e "${green}[Done]${textreset}"
 
-echo -e "Installing gpu-switch."
+echo "Installing gpu-switch."
 su mac -c "cd /tmp && git clone https://aur.archlinux.org/gpu-switch.git && cd gpu-switch && makepkg -s"
 pacman -U --noconfirm /tmp/gpu-switch/gpu-switch*.pkg.tar.zst
 echo -e "${green}[Done]${textreset}"
 
-echo -e "Installing mbpfan."
+echo "Installing mbpfan."
 su mac -c "cd /tmp && git clone https://aur.archlinux.org/mbpfan-git.git && cd mbpfan-git && makepkg -s"
 pacman -U --noconfirm /tmp/mbpfan-git/mbpfan-git*.pkg.tar.zst
+sed -i 's/#min_fan1_speed = 2000/min_fan1_speed = 2000/' /etc/mbpfan.conf
+sed -i 's/low_temp = 63/low_temp = 48/' /etc/mbpfan.conf 
+sed -i 's/high_temp= 66/high_temp = 58/' /etc/mbpfan.conf
 echo -e "${green}[Done]${textreset}"
 
 echo -e "Enabling services."
@@ -90,6 +98,7 @@ systemctl enable reflector.timer
 systemctl enable fstrim.timer
 systemctl enable acpid
 systemctl enable mbpfan.service
+systemctl enable reflector.service
 echo -e "${green}[Done]${textreset}"
 
 echo -e "${orange}Enabling ufw and setting the default firewall policy to deny.${textreset}"
@@ -115,6 +124,3 @@ while [ $error == 1 ]; do
   esac
 
 done
-
-
-
