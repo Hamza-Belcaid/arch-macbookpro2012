@@ -70,7 +70,7 @@ echo "title Arch Linux" >> /boot/loader/entries/arch.conf
 echo "linux /vmlinuz-linux" >> /boot/loader/entries/arch.conf
 echo "initrd /initramfs-linux.img" >> /boot/loader/entries/arch.conf
 # Finding what is the root partition
-root = df -h | grep "/$" | cut -d " " -f 1
+root=$(df -h | grep "/$" | cut -d " " -f 1)
 echo "options root=$root rw" >> /boot/loader/entries/arch.conf
 echo -e "${green}[Done]${textreset}"
 
