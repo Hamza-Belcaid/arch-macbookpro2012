@@ -8,7 +8,7 @@ green="\033[0;92m"
 # These are warning messages before installation
 echo -e "${orange}[Warning]${textreset} This script should be run in the arch-chroot environment on a minimal Arch install.\n"
 
-echo -e "${green}[Important]${textreset} Make sure to change values for things such as the region and keyboad layout, by default they are configured for my specific needs.\n" 
+echo -e "${green}[Important]${textreset} Make sure to change values for things such as the region and keyboad layout.\nDefault Timezone = Casablanca\nDefault Language = English-US\n" 
 sleep 5 
 
 # Configuring locales
@@ -23,7 +23,7 @@ locale-gen
 echo "LANG=en_US.UTF-8" >> /etc/locale.conf
 echo -e "${green}[Done]${textreset}" 
 
-echo "Configuring Keyboard layout to german."
+echo "Configuring Keyboard layout to german(austria)."
 echo "KEYMAP=de_CH-latin1" >> /etc/vconsole.conf
 echo -e "${green}[Done]${textreset}"
 
@@ -31,11 +31,11 @@ echo "Configuring hostname to 'macbookpro'."
 echo "macbookpro" >> /etc/hostname
 echo -e "${green}[Done]${textreset}"
 
-echo "Creating mac user."
+echo "Creating user mac"
 useradd -G wheel -m mac
 echo -e "${green}[Done]${textreset}"
 
-echo "Enter the user password."
+echo "Enter the user password for mac"
 passwd mac
 echo -e "${green}[Done]${textreset}"
 
@@ -75,7 +75,7 @@ echo "options root=$root rw" >> /boot/loader/entries/arch.conf
 echo -e "${green}[Done]${textreset}"
 
 echo "Downloading packages."
-pacman -S --noconfirm neovim networkmanager network-manager-applet intel-ucode mtools dosfstools ntfs-3g xdg-user-dirsbase-devel linux-headers pacman-contrib go wl-clipboard gvfs inetutils dnsmasq ufw broadcom-wl-dkms bluez bluez-utils cups hplip bash-completion flatpak acpi acpid acpi_call tlp btop firefox 
+pacman -S --noconfirm neovim networkmanager network-manager-applet intel-ucode mtools dosfstools ntfs-3g xdg-user-dirs base-devel linux-headers pacman-contrib go wl-clipboard gvfs inetutils dnsmasq ufw broadcom-wl-dkms bluez bluez-utils cups hplip bash-completion flatpak acpi acpid acpi_call tlp btop firefox timeshift 
 echo -e "${green}[Done]${textreset}"
 
 echo "Installing yay."
@@ -107,6 +107,7 @@ systemctl enable fstrim.timer
 systemctl enable acpid
 systemctl enable mbpfan.service
 systemctl enable reflector.service
+systemctl enable cronie.service
 echo -e "${green}[Done]${textreset}"
 
 echo -e "${orange}Enabling ufw and setting the default firewall policy to deny.${textreset}"
